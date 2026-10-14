@@ -5,9 +5,7 @@ from cocotb.clock import Clock
 from cocotb.triggers import RisingEdge, Timer
 from cocotb.utils import get_sim_time
  
-# ----------------------------------------------------------------------------
-# Configuration: EDIT THESE
-# ----------------------------------------------------------------------------
+
  
 SIG = {
     "clk": "clk",
@@ -33,14 +31,12 @@ SIG = {
     "sram_dout": "dout",
 }
  
-EXPECTED_CYCLES_PER_ACCESS = 2   # per the docs; None disables the throughput check
-TIMEOUT = 50                     # max cycles to wait for any handshake/response
+EXPECTED_CYCLES_PER_ACCESS = 2   
+TIMEOUT = 50                     
 CLK_PERIOD_NS = 10
  
  
-# ----------------------------------------------------------------------------
-# Environment: signal access, SRAM model, background monitor
-# ----------------------------------------------------------------------------
+
  
 def now():
     """Current clock-cycle number (rising edges are at multiples of the period)."""
@@ -118,10 +114,7 @@ async def idle(env, cycles):
         await RisingEdge(env.h("clk"))
     await Timer(1, "ns")
  
- 
-# ----------------------------------------------------------------------------
-# Client drivers (testbench acting as I/O Unit and RTU)
-# ----------------------------------------------------------------------------
+
  
 async def io_write(env, addr, data, wen=1, timeout=TIMEOUT):
     """
@@ -206,10 +199,7 @@ def unique_value(addr):
     """Address-derived data so aliasing between addresses is detected."""
     return (addr * 0x9E37 + 0x1234) & 0xFFFF
  
- 
-# ----------------------------------------------------------------------------
-# Data tests
-# ----------------------------------------------------------------------------
+
  
 @cocotb.test()
 async def test_write_then_read_all_addresses(dut):
